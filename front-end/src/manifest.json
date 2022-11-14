@@ -1,0 +1,24 @@
+{
+	"name": "Styra",
+	"description": "Some description here",
+	"version": "1.0.0",
+	"manifest_version": 3,
+	"icons": {
+		"64": "assets/64w/Asset 1.png",
+		"256": "assets/256w/Asset 1.png"
+	},
+	"background": {
+		"service_worker": "background.js"
+	},
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["content-script.js"]
+		}
+	],
+	"host_permissions": ["https://styra-landing.netlify.app/"],
+	"permissions": ["storage", "tabs", "alarms", "activeTab", "scripting"],
+	"action": {
+		"default_popup": "popup.html"
+	}
+}
