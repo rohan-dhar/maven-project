@@ -12,7 +12,9 @@ Users are also given the choice to analyze his/her mood and number of distractio
 
 ## 👀 Demo
 
-You can checkout Styra in action in the [![this video](https://i.imgur.com/xJ5CmTa.png)](https://www.youtube.com/watch?v=YxxHXsnLhS4)
+You can checkout Styra in action in the following video -
+
+[![demo video](https://i.imgur.com/xJ5CmTa.png)](https://www.youtube.com/watch?v=YxxHXsnLhS4)
 
 ## 🚀 Inspiration
 
