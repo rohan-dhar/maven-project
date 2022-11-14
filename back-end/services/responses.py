@@ -1,5 +1,6 @@
 # EMOTIONS
-SIMPLE_EMOTIONS = ['anger', 'contempt', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise']
+SIMPLE_EMOTIONS = ['anger', 'contempt', 'disgust',
+                   'fear', 'happiness', 'neutral', 'sadness', 'surprise']
 COMPLEX_EMOTIONS = ['alert', 'tired', 'non_vigilant']
 
 singled_responses = {
@@ -7,7 +8,7 @@ singled_responses = {
         "Maybe talking to a friend would help out?",
         "Shall we take a short break, maybe that would ease things out?"
     ],
-    'contempt': [ 
+    'contempt': [
         "In contempt......."
     ],
     'fear': [
@@ -18,12 +19,12 @@ singled_responses = {
         "Try switching to something different?",
         "Oof! That might have been something hard to watch!",
         "Ewwww !??? That's what we thought too!"
-    ], 
+    ],
     'happiness': [
         "Studies show that our bodies relax out when we get happy!",
         "Kudos! Glad to see that smile!",
         "Woah! Keep it up!"
-    ], 
+    ],
     'neutral': [
         "We can't really comprehend anything, maybe everything's just normal?",
         "Hmmmmmmmmmmmmmmmmm"
@@ -43,7 +44,7 @@ singled_responses = {
         "Feeling Tired how about some coffee or a power nap?"
     ],
     'alert': [
-        "Glad to see someone so engrossed in their work!", 
+        "Glad to see someone so engrossed in their work!",
         "We notice some serious concentration! Keep it up!"
     ],
     'non_vigilant': [
@@ -53,59 +54,59 @@ singled_responses = {
 }
 
 coupled_responses = {
-	('anger', 'contempt'): '', 
-	('anger', 'disgust'): 'Woah! We recommend you to chill out a bit!', 
-	('anger', 'fear'): '', 
-	('anger', 'happiness'): 'I cant comprehend what you are going through right now!', 
-	('anger', 'neutral'): '', 
-	('anger', 'sadness'): '', 
-	('anger', 'surprise'): 'I cant comprehend what you are going through right now!', 
-	('anger', 'alert'): '', 
-	('anger', 'tired'): '', 
-	('anger', 'non_vigilant'): '', 
-	('contempt', 'disgust'): '', 
-	('contempt', 'fear'): '', 
-	('contempt', 'happiness'): '',
-	('contempt', 'neutral'): '',
-	('contempt', 'sadness'): '',
-	('contempt', 'surprise'): '',
-	('contempt', 'alert'): '',
-	('contempt', 'tired'): '',
-	('contempt', 'non_vigilant'): '',
-	('disgust', 'fear'): '',
-	('disgust', 'happiness'): '',
-	('disgust', 'neutral'): '',
-	('disgust', 'sadness'): '',
-	('disgust', 'surprise'): '',
-	('disgust', 'alert'): '',
-	('disgust', 'tired'): '',
-	('disgust', 'non_vigilant'): '',
-	('fear', 'happiness'): '',
-	('fear', 'neutral'): '',
-	('fear', 'sadness'): '',
-	('fear', 'surprise'): '',
-	('fear', 'alert'): '',
-	('fear', 'tired'): '',
-	('fear', 'non_vigilant'): '',
-	('happiness', 'neutral'): '',
-	('happiness', 'sadness'): '',
-	('happiness', 'surprise'): '',
-	('happiness', 'alert'): '',
-	('happiness', 'tired'): '',
-	('happiness', 'non_vigilant'): '',
-	('neutral', 'sadness'): '',
-	('neutral', 'surprise'): '',
-	('neutral', 'alert'): '',
-	('neutral', 'tired'): '',
-	('neutral', 'non_vigilant'): '',
-	('sadness', 'surprise'): '',
-	('sadness', 'alert'): '',
-	('sadness', 'tired'): '',
-	('sadness', 'non_vigilant'): '',
-	('surprise', 'alert'): '',
-	('surprise', 'tired'): '',
-	('surprise', 'non_vigilant'): '',
-	('alert', 'tired'): '',
-	('alert', 'non_vigilant'): '',
-	('tired', 'non_vigilant'): ''
+    ('anger', 'contempt'): '',
+    ('anger', 'disgust'): 'Woah! We recommend you to chill out a bit!',
+    ('anger', 'fear'): '',
+    ('anger', 'happiness'): 'I cant comprehend what you are going through right now!',
+    ('anger', 'neutral'): '',
+    ('anger', 'sadness'): '',
+    ('anger', 'surprise'): 'I cant comprehend what you are going through right now!',
+    ('anger', 'alert'): '',
+    ('anger', 'tired'): '',
+    ('anger', 'non_vigilant'): '',
+    ('contempt', 'disgust'): '',
+    ('contempt', 'fear'): '',
+    ('contempt', 'happiness'): '',
+    ('contempt', 'neutral'): '',
+    ('contempt', 'sadness'): '',
+    ('contempt', 'surprise'): '',
+    ('contempt', 'alert'): '',
+    ('contempt', 'tired'): '',
+    ('contempt', 'non_vigilant'): '',
+    ('disgust', 'fear'): '',
+    ('disgust', 'happiness'): '',
+    ('disgust', 'neutral'): '',
+    ('disgust', 'sadness'): '',
+    ('disgust', 'surprise'): '',
+    ('disgust', 'alert'): '',
+    ('disgust', 'tired'): '',
+    ('disgust', 'non_vigilant'): '',
+    ('fear', 'happiness'): '',
+    ('fear', 'neutral'): '',
+    ('fear', 'sadness'): '',
+    ('fear', 'surprise'): '',
+    ('fear', 'alert'): '',
+    ('fear', 'tired'): '',
+    ('fear', 'non_vigilant'): '',
+    ('happiness', 'neutral'): '',
+    ('happiness', 'sadness'): '',
+    ('happiness', 'surprise'): '',
+    ('happiness', 'alert'): '',
+    ('happiness', 'tired'): '',
+    ('happiness', 'non_vigilant'): '',
+    ('neutral', 'sadness'): '',
+    ('neutral', 'surprise'): '',
+    ('neutral', 'alert'): '',
+    ('neutral', 'tired'): '',
+    ('neutral', 'non_vigilant'): '',
+    ('sadness', 'surprise'): '',
+    ('sadness', 'alert'): '',
+    ('sadness', 'tired'): '',
+    ('sadness', 'non_vigilant'): '',
+    ('surprise', 'alert'): '',
+    ('surprise', 'tired'): '',
+    ('surprise', 'non_vigilant'): '',
+    ('alert', 'tired'): '',
+    ('alert', 'non_vigilant'): '',
+    ('tired', 'non_vigilant'): ''
 }

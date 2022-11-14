@@ -6,7 +6,7 @@ class UserEmotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserEmotion
         fields = '__all__'
-    
+
 
 class UserKeywordSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import asyncio
 import io
 import glob
@@ -17,17 +18,15 @@ from nltk.stem.snowball import SnowballStemmer
 # MODULE VARIABLES
 OK_FACE_LANDMARKS = False
 FACE_ATTR = ['emotion']
-API_PARAMS = dict(detection_model='detection_01', 
-        return_face_id=True, 
-        return_face_landmarks=OK_FACE_LANDMARKS, 
-        return_face_attributes=FACE_ATTR, 
-        recognition_model='recognition_04')
+API_PARAMS = dict(detection_model='detection_01',
+                  return_face_id=True,
+                  return_face_landmarks=OK_FACE_LANDMARKS,
+                  return_face_attributes=FACE_ATTR,
+                  recognition_model='recognition_04')
 
 
-# LOAD ENV VARIABLES 
+# LOAD ENV VARIABLES
 # Create your own .env file and add SUBS_KEY & ENDPOINT
-import os
-from dotenv import load_dotenv
 load_dotenv()
 
 
@@ -39,7 +38,7 @@ TEXT_ENDPOINT = os.getenv("TEXT_ENDPOINT")
 
 
 # Yake API Details
-YAKE = "http://yake.inesctec.pt/yake/v2/extract_keywords_by_url?url=" 
+YAKE = "http://yake.inesctec.pt/yake/v2/extract_keywords_by_url?url="
 DETAILS = "&max_ngram_size=1&number_of_keywords=20&highlight=false"
 
 # Create stemmer object

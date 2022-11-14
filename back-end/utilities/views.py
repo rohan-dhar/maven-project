@@ -22,14 +22,15 @@ from .serializers import UserEmotionSerializer, UserKeywordSerializer
 # NOTE THE USE OF "None" for features that haven't been recorded
 
 PREDICTION = {0: "alert",  1: "non_vigilant",  2: "tired"}
-ORDER_EMOTIONS = ['anger','contempt','disgust','fear','happiness','neutral','sadness','surprise']
+ORDER_EMOTIONS = ['anger', 'contempt', 'disgust', 'fear',
+                  'happiness', 'neutral', 'sadness', 'surprise']
 ALERT_EMOTIONS = ['anger', 'sadness', 'non_vigilant', 'tired']
 # To store singular counts
 CHANGE_DETECT_FILE_PATH = './utilities/change_detect_data.txt'
 FACE_DETECT_FILE_PATH = './utilities/face_detect_data.txt'
 # Emotion Call Count Check
 FACE_DETECT_CALL_COUNT = 6
-FACE_DETECT_CALL_THRESHOLD = 0.6 
+FACE_DETECT_CALL_THRESHOLD = 0.6
 # Segregation between history just and history all
 JUST_LIM = 4
 ALL_LIM = 24
@@ -48,11 +49,12 @@ class FaceDetect(APIView):
         '''
 
         try:
-            res = services.api.face_detect(request.data.get("path"), request.data.get("choice"))
+            res = services.api.face_detect(
+                request.data.get("path"), request.data.get("choice"))
         except Exception as e:
             print(f"Exception in face_detect: {e}")
-            return Response({'error': "Could not detect faces."}, status = status.HTTP_400_BAD_REQUEST)
-        
+            return Response({'error': "Could not detect faces."}, status=status.HTTP_400_BAD_REQUEST)
+
         # Sample API response
         # res = {
         #     "emotion": {
@@ -66,7 +68,7 @@ class FaceDetect(APIView):
         #         'surprise': 0.05
         #     }
         # }
-        
+
         # TODO: INCLUDE MODEL HERE
         model_input = [0.2, 0.05, 0.05, 0.05, 0.05, 0.05, 0.5, 0.05]
         # model_input = [float(res['emotion'][x]) for x in ORDER_EMOTIONS]
@@ -79,11 +81,10 @@ class FaceDetect(APIView):
         print("MODEL PREDICTION", model_prediction)
 
         res["complex-emotion"] = model_prediction
-        obj = UserEmotion(timestamp=timezone.now(), emotions=res, prediction=model_prediction)
+        obj = UserEmotion(timestamp=timezone.now(),
+                          emotions=res, prediction=model_prediction)
         obj.save()
         res["pk"] = obj.pk
-        
-
 
         with open(FACE_DETECT_FILE_PATH, "r+") as f:
             data = f.read()
@@ -108,7 +109,8 @@ class FaceDetect(APIView):
         # extract the top emotion
         if data == 0:
             print("FACE DETECT CALL COUNT REACHED")
-            objlist = UserEmotion.objects.all().order_by('-timestamp')[:FACE_DETECT_CALL_COUNT]
+            objlist = UserEmotion.objects.all().order_by(
+                '-timestamp')[:FACE_DETECT_CALL_COUNT]
             rankings = {}
             for x in ORDER_EMOTIONS:
                 rankings[x] = 0
@@ -123,8 +125,9 @@ class FaceDetect(APIView):
             for custom_emotion in ORDER_EMOTIONS:
                 if custom_emotion not in ALERT_EMOTIONS:
                     rankings.pop(custom_emotion)
-                
-            major_emotion = sorted(rankings.items(), key=lambda item: item[1], reverse=True)[0]
+
+            major_emotion = sorted(
+                rankings.items(), key=lambda item: item[1], reverse=True)[0]
 
             print("MAJOR EMOTION", major_emotion)
             fres["got_emotion"] = True
@@ -133,8 +136,9 @@ class FaceDetect(APIView):
             if (major_emotion[1] > FACE_DETECT_CALL_THRESHOLD) and (major_emotion[0] in ALERT_EMOTIONS):
                 print("THRESHOLD CAPTURED")
                 fres["emotion"].append(major_emotion[0])
-                fres["quote"].append(random.choice(services.responses.singled_responses[major_emotion[0]]))
-            
+                fres["quote"].append(random.choice(
+                    services.responses.singled_responses[major_emotion[0]]))
+
             crankings = {}
             for x in list(PREDICTION.values()):
                 crankings[x] = 0
@@ -142,12 +146,14 @@ class FaceDetect(APIView):
                 for cur in obj.emotions["complex-emotion"]:
                     x = obj.emotions["complex-emotion"][cur]
                     crankings[cur] += (x / len(PREDICTION))
-            major_cemotion = sorted(crankings.items(), key=lambda item: item[1], reverse=True)[0]
+            major_cemotion = sorted(
+                crankings.items(), key=lambda item: item[1], reverse=True)[0]
             if (major_cemotion[0] in ALERT_EMOTIONS) and (major_cemotion[1] > FACE_DETECT_CALL_THRESHOLD):
                 print("MAJOR COMPLEX EMOTION", major_cemotion)
                 fres["emotion"].append(major_cemotion[0])
-                fres["quote"].append(random.choice(services.responses.singled_responses[major_cemotion[0]]))
-            
+                fres["quote"].append(random.choice(
+                    services.responses.singled_responses[major_cemotion[0]]))
+
             # IF NOT FOUND
             if len(fres["emotion"]) == 0:
                 fres["got_emotion"] = False
@@ -155,7 +161,7 @@ class FaceDetect(APIView):
         print("FINAL RESPONSE")
         print(fres)
 
-        return Response(fres)     
+        return Response(fres)
 
 
 # send pk to record response later
@@ -167,58 +173,60 @@ class ChangeDetect(APIView):
         res = UserKeyword.objects.all().order_by('-timestamp')[:ALL_LIM]
 
         # Min 3 Max 5 after Min 10 in history_all
-        
-        CUR_LIM = min(max(2, len(res) - MIN_ALL_LIM), JUST_LIM)
-        
-        print(CUR_LIM, len(res))
 
+        CUR_LIM = min(max(2, len(res) - MIN_ALL_LIM), JUST_LIM)
+
+        print(CUR_LIM, len(res))
 
         # maps a url to its json keywords
         history_all = dict()
         for obj in res[CUR_LIM:]:
             history_all[obj.url] = obj.keywords
-       
+
         history_just = dict()
         for obj in res[:CUR_LIM]:
             history_just[obj.url] = obj.keywords
 
         try:
-            current_keywords = services.api.get_keywords(request.data.get("url"))
+            current_keywords = services.api.get_keywords(
+                request.data.get("url"))
             history_just[request.data.get("url")] = current_keywords
         except Exception as e:
             print(f"Exception in get_keywords: {e}")
-            return Response({'error': "Could not get keywords."}, status = status.HTTP_400_BAD_REQUEST)
+            return Response({'error': "Could not get keywords."}, status=status.HTTP_400_BAD_REQUEST)
 
         with open(CHANGE_DETECT_FILE_PATH, "r+") as f:
             data = f.read()
             if data == '':
-                data = 0        
+                data = 0
             data = int(data)
             f.seek(0)
             f.write(str(data - 1))
             f.truncate()
 
-        if len(res) < MIN_ALL_LIM  or data > 0:
+        if len(res) < MIN_ALL_LIM or data > 0:
             # Not Enough Data
-            print("Not Enough Data") 
+            print("Not Enough Data")
             change_detected = False
         else:
-            change_detected = services.api.detect_change(history_all=history_all, history_just=history_just)
+            change_detected = services.api.detect_change(
+                history_all=history_all, history_just=history_just)
             print("HISTORY ALL")
             print(history_all, len(history_all))
             print("HISTORY JUST")
             print(history_just, len(history_just))
 
-        new_obj = UserKeyword(timestamp=timezone.now(), keywords=current_keywords, url=request.data.get("url"), prediction=change_detected)
+        new_obj = UserKeyword(timestamp=timezone.now(
+        ), keywords=current_keywords, url=request.data.get("url"), prediction=change_detected)
         new_obj.save()
- 
+
         res = {"pk": new_obj.pk, "change_detected": change_detected}
         print("CHANGE DETECT RESULT")
-        print(res)       
+        print(res)
 
         return Response(res)
 
-        
+
 class UserEmotionViewSet(viewsets.ModelViewSet):
     queryset = UserEmotion.objects.all().order_by('-timestamp')
     serializer_class = UserEmotionSerializer
@@ -250,7 +258,7 @@ def update_user_emotion_response(request, pk, response):
     except Exception as e:
         print(e)
         status["status"] = "FAIL"
-        status["content"] = str(e) 
+        status["content"] = str(e)
         return HttpResponse(json.dumps(status))
     return HttpResponse(json.dumps(status))
 
@@ -267,7 +275,7 @@ def update_user_keyword_response(request, pk, response):
     try:
         obj = UserKeyword.objects.get(pk=pk)
         obj.response = response
-        
+
         if response == "Yes":
             # Delete last JUST_LIM from UserKeyword
             pass
@@ -282,7 +290,7 @@ def update_user_keyword_response(request, pk, response):
     except Exception as e:
         print(e)
         status["status"] = "FAIL"
-        status["content"] = str(e) 
+        status["content"] = str(e)
         return HttpResponse(json.dumps(status))
     return HttpResponse(json.dumps(status))
 
@@ -306,18 +314,20 @@ RETURN FORMAT FOR ANALYSIS
 }
 '''
 
+
 def get_analysis_data(request):
     try:
         cur_date = timezone.now()
         prev_date = cur_date - datetime.timedelta(days=1)
-        
+
         res = {
             "user-keywords": [],
             "user-emotions": []
         }
-        
+
         # get user keywords
-        objs1 = UserKeyword.objects.filter(timestamp__range=[prev_date, cur_date]).order_by('timestamp')
+        objs1 = UserKeyword.objects.filter(
+            timestamp__range=[prev_date, cur_date]).order_by('timestamp')
         for obj in objs1:
             res["user-keywords"].append({
                 "timestamp": str(obj.timestamp),
@@ -326,7 +336,8 @@ def get_analysis_data(request):
             })
 
         # get user emotions
-        objs2 = UserEmotion.objects.filter(timestamp__range=[prev_date, cur_date]).order_by('timestamp')
+        objs2 = UserEmotion.objects.filter(
+            timestamp__range=[prev_date, cur_date]).order_by('timestamp')
         for obj in objs2:
             res["user-emotions"].append({
                 "timestamp": str(obj.timestamp),

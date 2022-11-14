@@ -14,22 +14,27 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserEmotion',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('timestamp', models.DateTimeField(verbose_name='timestamp')),
                 ('emotions', models.JSONField(verbose_name='emotions')),
                 ('prediction', models.JSONField(verbose_name='prediction')),
-                ('response', models.CharField(default='None', max_length=200, verbose_name='response')),
+                ('response', models.CharField(default='None',
+                 max_length=200, verbose_name='response')),
             ],
         ),
         migrations.CreateModel(
             name='UserKeyword',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('timestamp', models.DateTimeField(verbose_name='timestamp')),
                 ('keywords', models.JSONField(verbose_name='keywords')),
                 ('url', models.URLField(max_length=500, verbose_name='url')),
-                ('prediction', models.BooleanField(default=False, verbose_name='prediction')),
-                ('response', models.CharField(default='None', max_length=200, verbose_name='response')),
+                ('prediction', models.BooleanField(
+                    default=False, verbose_name='prediction')),
+                ('response', models.CharField(default='None',
+                 max_length=200, verbose_name='response')),
             ],
         ),
     ]

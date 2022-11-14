@@ -8,20 +8,20 @@ import pandas as pd
 # PARAMS
 SLEEP_TIME = 1.2
 CLASSES = {"alert": 0, "non_vigilant": 1, "tired": 2}
-DIR = "non_vigilant" # TRAINING CLASS
+DIR = "non_vigilant"  # TRAINING CLASS
 MODE = "test"
 OUTFILE = f"./dataset/{DIR}_{MODE}.csv"
 
 # FINAL RESULT
-res = {"anger": [], 
-    "contempt": [], 
-    "disgust": [], 
-    "fear": [], 
-    "happiness": [], 
-    "neutral": [], 
-    "sadness": [], 
-    "surprise": [],
-    "class": []}
+res = {"anger": [],
+       "contempt": [],
+       "disgust": [],
+       "fear": [],
+       "happiness": [],
+       "neutral": [],
+       "sadness": [],
+       "surprise": [],
+       "class": []}
 
 PATH = f"./dataset/{MODE}/{DIR}/"
 files = [PATH + f for f in os.listdir(PATH) if isfile(join(PATH, f))]
@@ -32,7 +32,8 @@ file_ptr = 0
 while not (api_lim_reached or all_files_read):
     while file_ptr < len(files):
         img = open(files[file_ptr], 'rb')
-        print(f"FILE SIZE for {files[file_ptr]}", os.stat(files[file_ptr]).st_size)
+        print(f"FILE SIZE for {files[file_ptr]}",
+              os.stat(files[file_ptr]).st_size)
         try:
             face = services.api.face_detect(img, True)
             for feature in face['emotion']:
@@ -57,7 +58,7 @@ while not (api_lim_reached or all_files_read):
         api_lim_reached = False
     else:
         all_files_read = True
-    
+
 df = pd.DataFrame.from_dict(res)
 print("CLASS", DIR)
 print(df.head())
