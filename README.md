@@ -2,14 +2,6 @@
 
 Styra is an AI powered chrome extension which detects when users get distracted, and prompts them to stay productive. Uses ML (using Python & Keras) on browser history and webcam feed.
 
-## 🚀 Inspiration
-
-On the modern-day internet, one can easily and unconsciously drift away to topics unrelated to their current work, hence leading to procrastination, killing productivity and time. 1
-
-The current scenario of COVID-19 has forced people to work from home. A lot of people are working remotely from home on their computers. Constant exposure to screen time negatively impacts our mental health and well-being. 2
-
-Keeping these issues in mind, we have built a chrome extension called “Styra”, Swedish for “steer”, which enhances user productivity and supplements their health and well-being.
-
 ## 🎉 What it does
 
 Styra helps you smartly and drastically increase your personal productivity for surfing over the internet while taking care of your health and well-being. Styra acts as your personal companion by keeping constant checks over your emotions and learning your current interests as you browse.
@@ -17,6 +9,18 @@ Styra helps you smartly and drastically increase your personal productivity for 
 When a user is distracted it politely reminds the user that he/she is getting distracted. It suggests user remedies like “take a break” or “have a cup of coffee” etc, based on the user's emotion.
 
 Users are also given the choice to analyze his/her mood and number of distractions over time in order to retrospect their productivity and health.
+
+## 👀 Demo
+
+You can checkout Styra in action in the [![this video](https://i.imgur.com/xJ5CmTa.png)](https://www.youtube.com/watch?v=YxxHXsnLhS4)
+
+## 🚀 Inspiration
+
+On the modern-day internet, one can easily and unconsciously drift away to topics unrelated to their current work, hence leading to procrastination, killing productivity and time.
+
+The current scenario of COVID-19 has forced people to work from home. A lot of people are working remotely from home on their computers. Constant exposure to screen time negatively impacts our mental health and well-being.
+
+Keeping these issues in mind, we have built a chrome extension called “Styra”, Swedish for “steer”, which enhances user productivity and supplements their health and well-being.
 
 ## ⚙️ How we built it
 
