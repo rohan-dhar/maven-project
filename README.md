@@ -56,8 +56,3 @@ For building a Chrome Extension we used Manifest v3.0 (along with an options pag
 - We became proficient in using the new manifest v3.0 methods and API to build chrome extensions
 - New ways we can communicate with the underlying chrome engine
 - We were fairly impressed with Django’s capabilities to easily manage databases, APIs, and form endpoints to communicate with our front-end
-
-## 🔍 Research References
-
-- [https://onlinelibrary.wiley.com/doi/full/10.1002/hbe2.229][https://onlinelibrary.wiley.com/doi/full/10.1002/hbe2.229]
-- [https://www.ijo.in/article.asp?issn=0301-4738;year=2020;volume=68;issue=11;spage=2378;epage=2383;aulast=Bahkir][https://www.ijo.in/article.asp?issn=0301-4738;year=2020;volume=68;issue=11;spage=2378;epage=2383;aulast=bahkir]

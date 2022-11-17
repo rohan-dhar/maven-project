@@ -270,7 +270,9 @@ class EmotionPage extends Page {
 		}</span>`;
 
 		this.text.innerHTML = `
-			<ul> ${quote.map((rem) => `<li>${rem}</li>`).join("")} </ul>`;
+			<ul> ${quote
+				.map((rem) => `<li>${rem.split("_").join(" ")}</li>`)
+				.join("")} </ul>`;
 	}
 
 	async handleBreak() {
@@ -363,66 +365,6 @@ class BreakPage extends Page {
 		this.mainBtn.addEventListener("click", this.handleMoreTime);
 		this.subBtn.addEventListener("click", this.handleClose);
 		this.onDone = onDone;
-	}
-}
-
-class Orchestrator {
-	pages = {};
-
-	closeAll() {
-		Object.entries(this.pages).map(([, page]) => {
-			page.isOpen = false;
-		});
-	}
-
-	async openPage() {
-		const store = await chromeStore.getAll();
-		this.closeAll();
-
-		if (!userName.get()) {
-			this.pages.setup.isOpen = true;
-			return;
-		}
-
-		if (inTime(store, "breakTill")) {
-			this.pages.break.isOpen = true;
-			return;
-		}
-
-		if (store.pageMode === "distracted") {
-			this.pages.distract.isOpen = true;
-			return;
-		}
-
-		if (store.pageMode === "tired") {
-			this.pages.emotion.isOpen = true;
-			return;
-		}
-
-		if (store.pageMode === "analysis") {
-			this.pages.analysis.isOpen = true;
-			return;
-		}
-
-		this.pages.main.isOpen = true;
-	}
-
-	async init() {
-		const { pages } = this;
-		pages.main = new MainPage(this.openPage);
-		pages.setup = new SetupPage(this.openPage);
-		pages.emotion = new EmotionPage(this.openPage);
-		pages.distract = new DistractPage(this.openPage);
-		pages.break = new BreakPage(this.openPage);
-		pages.analysis = new AnalysisFrontPage(this.openPage);
-
-		this.openPage();
-	}
-
-	constructor() {
-		this.openPage = this.openPage.bind(this);
-		this.init = this.init.bind(this);
-		document.addEventListener("DOMContentLoaded", this.init);
 	}
 }
 
@@ -535,8 +477,14 @@ class AnalysisFrontPage extends Page {
 	}
 
 	async getData() {
-		let url = `${BASE_URL}/utils/analysis`; //TODO
-		let response = await fetch(url);
+		let url = `${BASE_URL}/utils/analysis/`;
+		let response;
+		try {
+			response = await fetch(url);
+		} catch (err) {
+			return {};
+		}
+
 		let resData = await response.json();
 		return resData;
 	}
@@ -566,9 +514,9 @@ class AnalysisFrontPage extends Page {
 					</thead>
 					<tbody>
 						<tr style="text-align: center">
-							<td ><span>${Number.parseFloat(top_3[i][0][1]).toFixed(2)}</span></td>
-							<td><span>${Number.parseFloat(top_3[i][1][1]).toFixed(2)}</span></td>
-							<td><span>${Number.parseFloat(top_3[i][2][1]).toFixed(2)}</span></td>
+							<td ><span>${Number.parseFloat(top_3[i][0][1]).toFixed(2) * 100}%</span></td>
+							<td><span>${Number.parseFloat(top_3[i][1][1]).toFixed(2) * 100}%</span></td>
+							<td><span>${Number.parseFloat(top_3[i][2][1]).toFixed(2) * 100}%</span></td>
 				
 						</tr>
 					</tbody>
@@ -588,6 +536,7 @@ class AnalysisFrontPage extends Page {
 	async setup() {
 		this.analysis_data = await this.getData();
 		this.createTimeline(this.preprocessData(this.analysis_data));
+		// this.createTimeline(this.preprocessData(this.dummyData));
 		return 1;
 	}
 
@@ -599,4 +548,65 @@ class AnalysisFrontPage extends Page {
 		this.backButton.addEventListener("click", this.openMain);
 	}
 }
+
+class Orchestrator {
+	pages = {};
+
+	closeAll() {
+		Object.entries(this.pages).map(([, page]) => {
+			page.isOpen = false;
+		});
+	}
+
+	async openPage() {
+		const store = await chromeStore.getAll();
+		this.closeAll();
+
+		if (!userName.get()) {
+			this.pages.setup.isOpen = true;
+			return;
+		}
+
+		if (inTime(store, "breakTill")) {
+			this.pages.break.isOpen = true;
+			return;
+		}
+
+		if (store.pageMode === "distracted") {
+			this.pages.distract.isOpen = true;
+			return;
+		}
+
+		if (store.pageMode === "tired") {
+			this.pages.emotion.isOpen = true;
+			return;
+		}
+
+		if (store.pageMode === "analysis") {
+			this.pages.analysis.isOpen = true;
+			return;
+		}
+
+		this.pages.main.isOpen = true;
+	}
+
+	async init() {
+		const { pages } = this;
+		pages.main = new MainPage(this.openPage);
+		pages.setup = new SetupPage(this.openPage);
+		pages.emotion = new EmotionPage(this.openPage);
+		pages.distract = new DistractPage(this.openPage);
+		pages.break = new BreakPage(this.openPage);
+		pages.analysis = new AnalysisFrontPage(this.openPage);
+
+		this.openPage();
+	}
+
+	constructor() {
+		this.openPage = this.openPage.bind(this);
+		this.init = this.init.bind(this);
+		document.addEventListener("DOMContentLoaded", this.init);
+	}
+}
+
 const orchestrator = new Orchestrator();

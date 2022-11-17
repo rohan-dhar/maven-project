@@ -48,30 +48,29 @@ class FaceDetect(APIView):
             RETURNS fres (with remedy and emotion)
         '''
 
-        try:
-            res = services.api.face_detect(
-                request.data.get("path"), request.data.get("choice"))
-        except Exception as e:
-            print(f"Exception in face_detect: {e}")
-            return Response({'error': "Could not detect faces."}, status=status.HTTP_400_BAD_REQUEST)
+        # try:
+        #     res = services.api.face_detect(
+        #         request.data.get("path"), request.data.get("choice"))
+        # except Exception as e:
+        #     print(f"Exception in face_detect: {e}")
+        #     return Response({'error': "Could not detect faces."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Sample API response
-        # res = {
-        #     "emotion": {
-        #         'anger': 0.05,
-        #         'contempt': 0.05,
-        #         'disgust': 0.05,
-        #         'fear': 0.1,
-        #         'happiness': 0.05,
-        #         'neutral': 0.05,
-        #         'sadness': 0.6,
-        #         'surprise': 0.05
-        #     }
-        # }
+        res = {
+            "emotion": {
+                'anger': 0,
+                'contempt': 0.05,
+                'disgust': 0.05,
+                'fear': 0.05,
+                'happiness': 0,
+                'neutral': 0.05,
+                'sadness': 0.8,
+                'surprise': 0
+            }
+        }
 
         # TODO: INCLUDE MODEL HERE
-        model_input = [0.2, 0.05, 0.05, 0.05, 0.05, 0.05, 0.5, 0.05]
-        # model_input = [float(res['emotion'][x]) for x in ORDER_EMOTIONS]
+        model_input = [float(res['emotion'][x]) for x in ORDER_EMOTIONS]
         print("MODEL INPUT", model_input)
         model_result = services.emotion_model.model.predict(model_input)
         model_prediction = dict()
@@ -211,10 +210,6 @@ class ChangeDetect(APIView):
         else:
             change_detected = services.api.detect_change(
                 history_all=history_all, history_just=history_just)
-            print("HISTORY ALL")
-            print(history_all, len(history_all))
-            print("HISTORY JUST")
-            print(history_just, len(history_just))
 
         new_obj = UserKeyword(timestamp=timezone.now(
         ), keywords=current_keywords, url=request.data.get("url"), prediction=change_detected)
